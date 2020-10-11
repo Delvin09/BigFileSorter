@@ -5,18 +5,50 @@ using System.Text;
 
 namespace Generator
 {
-    // TODO: Multithreading, Add dictionary, add progress
-    internal class Generator
+    // TODO: add progress
+    internal class Generator : IDisposable
     {
-        private static readonly Random _random = new Random();
-        private static readonly string[] _dic = { "test", "test2", "test3", "test4", "test4", "test5" };
+        private readonly Random _random = new Random();
+        private static readonly string[] _dic = { "object", "hospitable", "harass", "salty", "quickest", "school", "courageous", "spiritual", "grandfather", "miss", "time", "profit" };
+        private readonly int _bufferSize;
+        private readonly MemoryStream _buffer;
 
-        private string GenRow(long index = 1)
+        public Generator(int bufferSize)
+        {
+            _bufferSize = bufferSize;
+            _buffer = new MemoryStream(_bufferSize);
+        }
+
+        public void Process()
+        {
+            var writer = new StreamWriter(_buffer);
+            _buffer.Position = 0;
+
+            while (_buffer.Length < _bufferSize)
+            {
+                writer.WriteLine(GenRow());
+            }
+
+            writer.Flush();
+        }
+
+        public void CopyTo(Stream stream)
+        {
+            _buffer.Position = 0;
+            _buffer.CopyTo(stream);
+        }
+
+        public void Dispose()
+        {
+            _buffer.Close();
+        }
+
+        private string GenRow()
         {
             var count = _random.Next(1, _dic.Length + 1);
             StringBuilder stringBuilder = new StringBuilder();
 
-            stringBuilder.Append(index).Append(". ");
+            stringBuilder.Append(_random.Next(1, ushort.MaxValue)).Append(". ");
             for (int i = 0; i < count; i++)
             {
                 if (i > 0)
@@ -24,73 +56,6 @@ namespace Generator
                 stringBuilder.Append(_dic[_random.Next(0, _dic.Length)]);
             }
             return stringBuilder.ToString();
-        }
-
-        private void Proc(ConcurrentBag<StringBuilder> bag, long limit)
-        {
-            StringBuilder stringBuilder = new StringBuilder();
-            for (long i = 0; i <= limit;)
-            {
-                var row = GenRow(1);
-                i += row.Length;
-                stringBuilder.AppendLine(row);
-            }
-            bag.Add(stringBuilder);
-        }
-
-        private void Proc(Stream stream, ApplicationSettings settings)
-        {
-            while (stream.Length < settings.GetSizeInBytes())
-            {
-                using (var buffer = new MemoryStream(ApplicationSettings.GygabyteBytesCount))
-                using (var bufferWriter = new StreamWriter(buffer))
-                {
-                    buffer.Position = 0;
-
-                    while (buffer.Length < ApplicationSettings.GygabyteBytesCount)
-                    {
-                        bufferWriter.WriteLine(GenRow());
-                    }
-
-                    bufferWriter.Flush();
-                    buffer.Position = 0;
-                    buffer.CopyTo(stream);
-                }
-                stream.Flush();
-            }
-        }
-
-        public void Process(ApplicationSettings settings)
-        {
-            //var treadCount = Environment.ProcessorCount;
-            //var treads = new Task[treadCount];
-            //var bag = new ConcurrentBag<StringBuilder>();
-            //for (int i = 0; i < treadCount; i++)
-            //{
-            //    treads[i] = new Task(() => Proc(bag, settings.GetSizeInBytes() / treadCount));
-            //}
-
-            //foreach (var t in treads)
-            //    t.Start();
-
-            //Task.WaitAll(treads);
-
-            //var file = settings.Output;
-            //using (var stream = file.CreateText())
-            //{
-
-            //    foreach (var item in bag)
-            //    {
-            //        stream.WriteLine(item.ToString());
-            //    }
-            //    stream.Flush();
-            //}
-
-            var file = settings.Output;
-            using (var streamWriter = file.CreateText())
-            {
-                Proc(streamWriter.BaseStream, settings);
-            }
         }
     }
 }

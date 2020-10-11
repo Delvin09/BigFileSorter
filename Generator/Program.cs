@@ -29,8 +29,11 @@ namespace Generator
 
             commandLineParser.OnExecute(() =>
             {
-                settings.Size = sizeOption.HasValue() && sizeOption.ParsedValue > 0 ? sizeOption.ParsedValue : (byte)1;
-                settings.Output = new FileInfo(outputOption.HasValue() ? outputOption.ParsedValue : $"result_{DateTime.Now}.txt");
+                if (sizeOption.HasValue() && sizeOption.ParsedValue > 0)
+                    settings.Size = sizeOption.ParsedValue;
+
+                if (outputOption.HasValue())
+                    settings.Output = new FileInfo(outputOption.ParsedValue);
             });
 
             commandLineParser.Execute(args);
