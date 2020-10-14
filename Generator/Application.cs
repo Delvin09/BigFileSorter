@@ -15,14 +15,18 @@ namespace Generator
             {
                 while (stream.Length < settings.GetSizeInBytes())
                 {
+                    Console.SetCursorPosition(0, Console.CursorTop);
+                    Console.Write(new string(' ', Console.BufferWidth));
+                    Console.SetCursorPosition(0, Console.CursorTop);
+                    Console.Write($"Generate in progress {stream.Length} of {settings.GetSizeInBytes()}");
+
                     var bufferSize = ApplicationSettings.GigabyteBytesCount / processorCount;
                     var appendix = ApplicationSettings.GigabyteBytesCount % processorCount;
 
                     var generators = new Generator[processorCount];
                     for (int i = 0; i < processorCount; i++)
                     {
-                        var generator = new Generator(i == processorCount - 1 ? bufferSize + appendix : bufferSize);
-                        generators[i] = generator;
+                        generators[i] = new Generator(i == processorCount - 1 ? bufferSize + appendix : bufferSize);
                     }
 
                     Parallel.Invoke(generators.Select(g => new Action(g.Process)).ToArray());
@@ -32,8 +36,11 @@ namespace Generator
                         item.CopyTo(stream);
                         item.Dispose();
                     }
+
+                    stream.Flush();
                 }
             }
+            Console.WriteLine();
         }
     }
 }

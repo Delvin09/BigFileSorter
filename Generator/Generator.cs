@@ -1,15 +1,15 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.IO;
 using System.Text;
 
 namespace Generator
 {
-    // TODO: add progress
     internal class Generator : IDisposable
     {
-        private readonly Random _random = new Random();
         private static readonly string[] _dic = { "object", "hospitable", "harass", "salty", "quickest", "school", "courageous", "spiritual", "grandfather", "miss", "time", "profit" };
+        private static int _randomCount = 1;
+
+        private readonly Random _random = new Random(_randomCount++);
         private readonly int _bufferSize;
         private readonly MemoryStream _buffer;
 

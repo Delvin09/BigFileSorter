@@ -9,13 +9,16 @@ namespace Generator
     {
         static void Main(string[] args)
         {
-            Stopwatch stopwatch = Stopwatch.StartNew();
-
             var settings = GetApplicationSettings(args);
-            Application.Run(settings);
+            if (settings != null)
+            {
+                Stopwatch stopwatch = Stopwatch.StartNew();
 
-            stopwatch.Stop();
-            Console.WriteLine("Done! Time: " + stopwatch.Elapsed);
+                Application.Run(settings);
+
+                stopwatch.Stop();
+                Console.WriteLine("Done! Time: " + stopwatch.Elapsed);
+            }
         }
 
         private static ApplicationSettings GetApplicationSettings(string[] args)
@@ -25,7 +28,7 @@ namespace Generator
             var sizeOption = commandLineParser.Option<byte>("-s|--size <BYTE>", "Size of ouptput file in Gigabyte.", CommandOptionType.SingleValue);
             var outputOption = commandLineParser.Option<string>("-o|--output <STRING>", "Output file path.", CommandOptionType.SingleValue);
 
-            commandLineParser.HelpOption();
+            var helpOption = commandLineParser.HelpOption();
 
             commandLineParser.OnExecute(() =>
             {
@@ -37,7 +40,7 @@ namespace Generator
             });
 
             commandLineParser.Execute(args);
-            return settings;
+            return helpOption.HasValue() ? null : settings;
         }
     }
 }
