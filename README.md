@@ -1,10 +1,10 @@
 # BigFileSorter
 
-The project is implement some kind of [external sort](https://en.wikipedia.org/wiki/External_sorting#:~:text=External%20sorting%20is%20a%20class,usually%20a%20hard%20disk%20drive.) for huge files (100 Gb e.g.)
-The solunion has two projects: `Generator` and 'Sorter'
-Original task is:
-  1. Generate a txt file with a custom size and with a format like: '`<NUMBER>`. `<STRING>`'. Number and string can duplicate in result file.
-  2. Sort the generated file. Where first sort by the string and then by the number.
+The solution has two projects: `Generator` and `Sorter`.
+The `Sorter` project implements some kind of [external sorting algorithm](https://en.wikipedia.org/wiki/External_sorting#:~:text=External%20sorting%20is%20a%20class,usually%20a%20hard%20disk%20drive.) for huge files (e.g. 100 Gb).
+Its original task is:
+  1. To generate a txt file ofcustom size and format like: '`<NUMBER>`. `<STRING>`'. Number and string can be duplicated in the result file.
+  2. To sort the generated file, first sorting by string and then by number.
 
 ## `Generator` desciption
 
