@@ -9,7 +9,7 @@ Its original task is:
 ## `Generator` description
 
   1. Generator uses `Parallel` class to generate parts of a file and store them in the result. Part size is 1GB.
-  2. You need more RAM free space than the number of CPUs. (An 8 core processor needs >8 free GBs of RAM).
+  2. You need more RAM free space than the number of CPUs. (An 8-core processor needs >8 free GBs of RAM).
   3. You also need enough free space on your hard drive.
   4. Parameters you can use:
       * `-s` or `--size`: size of the result file in Gigabytes (1..255). By default - 4 Gb.
@@ -31,6 +31,6 @@ Its original task is:
    
 ## Future plans
   
-    1. To add some kind of a feature to analyze the current free space of RAM and adapt in-memory buffers for both `Generator` and `Sorter`.
-    2. To investigate the possibility of changing or excluding line serialization or deserialization and improving comparison algorithm for `Record` objects.
-    3. To use the `bytes` as a value for `Sorter` buffers.
+  1. To add some kind of a feature to analyze the current free space of RAM and adapt in-memory buffers for both `Generator` and `Sorter`.
+  2. To investigate the possibility of changing or excluding line serialization or deserialization and improving comparison algorithm for `Record` objects.
+  3. To use the `bytes` as a value for `Sorter` buffers.
