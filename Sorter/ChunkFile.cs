@@ -10,16 +10,22 @@ namespace Sorter
         private readonly StreamReader _streamReader;
         private readonly FileInfo _file;
 
+        private readonly Queue<Record> _cache = new Queue<Record>(1000);
+
         public ChunkFile(FileInfo file)
         {
             this._file = file;
             _streamReader = file.OpenText();
+
             Current = new Record(_streamReader.ReadLine());
+            FillCache();
         }
 
         public Record Current { get; private set; }
 
         object IEnumerator.Current => Current;
+
+        public FileInfo File => _file;
 
         public void Dispose()
         {
@@ -29,13 +35,15 @@ namespace Sorter
 
         public bool MoveNext()
         {
-            var line = _streamReader.ReadLine();
-            if (line == null)
+            if (_cache.Count == 0)
             {
-                Current = null;
-                return false;
+                FillCache();
+                if (_cache.Count == 0 && _streamReader.EndOfStream)
+                    return false;
             }
-            Current = new Record(line);
+
+            var line = _cache.Dequeue();
+            Current = line;
             return true;
         }
 
@@ -44,9 +52,13 @@ namespace Sorter
             throw new NotImplementedException();
         }
 
-        internal void Delete()
+        private void FillCache()
         {
-            throw new NotImplementedException();
+            for (int i = 0; i < 1000 && !_streamReader.EndOfStream; i++)
+            {
+                var line = _streamReader.ReadLine();
+                _cache.Enqueue(new Record(line));
+            }
         }
     }
 

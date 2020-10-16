@@ -2,13 +2,13 @@
 
 namespace Sorter
 {
-    class Record : IComparable<Record>
+    struct Record : IComparable<Record>
     {
         public Record(string text)
         {
-            var segments = text.Split('.');
-            Index = int.Parse(segments[0]);
-            Text = segments[1].TrimStart();
+            var dot = text.IndexOf('.');
+            Index = int.Parse(text.Substring(0, dot));
+            Text = text.Substring(dot + 2);
         }
 
         public int Index { get; set; }
@@ -17,7 +17,7 @@ namespace Sorter
 
         public int CompareTo(Record other)
         {
-            var result = StringComparer.Ordinal.Compare(this.Text, other.Text);
+            var result = string.CompareOrdinal(this.Text, other.Text);
             if (result == 0)
                 return this.Index.CompareTo(other.Index);
             return result;

@@ -1,4 +1,6 @@
 ﻿using McMaster.Extensions.CommandLineUtils;
+using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace Sorter
@@ -7,15 +9,19 @@ namespace Sorter
     {
         static void Main(string[] args)
         {
+            var stopwatch = Stopwatch.StartNew();
             var settings = GetApplicationSettings(args);
-            Application.Run(settings);
+            if (settings != null)
+                Application.Run(settings);
+            stopwatch.Stop();
+            Console.WriteLine($"Total time: {stopwatch.Elapsed}");
         }
 
         private static ApplicationSettings GetApplicationSettings(string[] args)
         {
             var commandLineParser = new CommandLineApplication();
             var settings = new ApplicationSettings();
-            
+
             var inputOption = commandLineParser.Option<string>("-i|--input <STRING>", "Input file path.", CommandOptionType.SingleValue)
                 .IsRequired();
 
@@ -23,7 +29,7 @@ namespace Sorter
             var tempOption = commandLineParser.Option<string>("-t|--temp <STRING>", "Temp directory path.", CommandOptionType.SingleValue);
             var bufferOption = commandLineParser.Option<int>("-b|--buffer <INT>", $"Buffer size (in row count). By defult: {ApplicationSettings.DefaultBufferSize}.", CommandOptionType.SingleValue);
 
-            commandLineParser.HelpOption();
+            var helpOption = commandLineParser.HelpOption();
 
             commandLineParser.OnExecute(() =>
             {
@@ -38,7 +44,7 @@ namespace Sorter
             });
 
             commandLineParser.Execute(args);
-            return settings;
+            return helpOption.HasValue() || !inputOption.HasValue() ? null : settings;
         }
     }
 

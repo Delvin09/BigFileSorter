@@ -15,15 +15,19 @@ namespace Sorter
                 {
                     Console.WriteLine("Start chunks creating");
                     stopwatch = Stopwatch.StartNew();
+
                     chunkProcessor.Process();
+
                     stopwatch.Stop();
                     Console.WriteLine("Chunks created! Time: " + stopwatch.Elapsed);
                 }
 
                 Console.WriteLine("Start merge chunks");
                 stopwatch = Stopwatch.StartNew();
+
                 var sorter = new ChunkSorter(settings);
                 sorter.Sort();
+
                 stopwatch.Stop();
                 Console.WriteLine("Chunks merged! Time: " + stopwatch.Elapsed);
             }

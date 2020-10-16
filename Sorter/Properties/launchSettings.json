@@ -2,7 +2,7 @@
   "profiles": {
     "Sorter": {
       "commandName": "Project",
-      "commandLineArgs": "-?"
+      "commandLineArgs": "-i \"C:\\Users\\Oleg\\source\\repos\\BigFileSorter\\Generator\\bin\\Debug\\netcoreapp3.1\\result_13.10.2020 14_03_13.txt\""
     }
   }
 }

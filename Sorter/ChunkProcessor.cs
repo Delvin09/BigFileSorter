@@ -23,8 +23,17 @@ namespace Sorter
                 int num = 0;
                 while (!reader.EndOfStream)
                 {
-                    File.WriteAllLines(@$"Temp\{num++}.txt", BatchRead(reader).AsParallel().OrderBy(r => r).Select(r => r.ToString()));
+                    File.WriteAllLines(@$"Temp\{num}.txt", GetRecords(reader).AsParallel().OrderBy(r => r).Select(r => r.ToString()));
+                    
+                    Console.SetCursorPosition(0, Console.CursorTop);
+                    Console.Write(new string(' ', Console.BufferWidth));
+                    Console.SetCursorPosition(0, Console.CursorTop);
+                    Console.Write($"Splitting in progress: {_inuptStream.Position} of {_inuptStream.Length} ({(_inuptStream.Position / (float)_inuptStream.Length) * 100:P2}), chuncks created: {num}");
+
+                    num++;
                 }
+
+                Console.WriteLine();
             }
         }
 
@@ -33,7 +42,7 @@ namespace Sorter
             _inuptStream.Close();
         }
 
-        private IEnumerable<Record> BatchRead(StreamReader reader)
+        private IEnumerable<Record> GetRecords(StreamReader reader)
         {
             for (int i = 0; i < _chunkSize; i++)
             {
