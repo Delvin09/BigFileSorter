@@ -9,7 +9,7 @@ namespace Generator
 
         public byte Size { get; set; } = 4; // in GB
 
-        public FileInfo Output { get; set; } = new FileInfo($"result_{DateTime.Now.ToString().Replace(':', '_')}.txt");
+        public FileInfo Output { get; set; } = new FileInfo($"result_{DateTime.Now.ToString().Replace('/', '-').Replace(':', '_')}.txt");
 
         public long GetSizeInBytes()
         {

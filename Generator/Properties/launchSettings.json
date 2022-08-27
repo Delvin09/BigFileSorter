@@ -2,7 +2,7 @@
   "profiles": {
     "Generator": {
       "commandName": "Project",
-      "commandLineArgs": "-s 100"
+      "commandLineArgs": "-s 10"
     }
   }
 }

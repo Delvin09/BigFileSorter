@@ -11,16 +11,19 @@ namespace Generator
 
         private readonly Random _random = new Random(_randomCount++);
         private readonly int _bufferSize;
-        private readonly MemoryStream _buffer;
+        private MemoryStream _buffer;
+        private string[] _wordBuffer = new string[_dic.Length];
 
         public Generator(int bufferSize)
         {
             _bufferSize = bufferSize;
-            _buffer = new MemoryStream(_bufferSize);
         }
 
         public void Process()
         {
+            _buffer?.Dispose();
+            _buffer = new MemoryStream(_bufferSize);
+
             var writer = new StreamWriter(_buffer);
             _buffer.Position = 0;
 
@@ -43,19 +46,26 @@ namespace Generator
             _buffer.Close();
         }
 
-        private string GenRow()
+        private StringBuilder GenRow()
         {
             var count = _random.Next(1, _dic.Length + 1);
-            StringBuilder stringBuilder = new StringBuilder();
-
-            stringBuilder.Append(_random.Next(1, ushort.MaxValue)).Append(". ");
+            var number = _random.Next(1, ushort.MaxValue);
+            int totalLength = 0;
             for (int i = 0; i < count; i++)
             {
-                if (i > 0)
-                    stringBuilder.Append(" ");
-                stringBuilder.Append(_dic[_random.Next(0, _dic.Length)]);
+                var str = _dic[_random.Next(0, _dic.Length)];
+                _wordBuffer[i] = str;
+                totalLength += str.Length;
             }
-            return stringBuilder.ToString();
+
+            StringBuilder stringBuilder = new StringBuilder(totalLength + count + 7);
+            stringBuilder.Append(number).Append(". ").Append(_wordBuffer[0]);
+
+            for (int i = 1; i < count; i++)
+            {
+                stringBuilder.Append(" ").Append(_wordBuffer[i]);
+            }
+            return stringBuilder;
         }
     }
 }

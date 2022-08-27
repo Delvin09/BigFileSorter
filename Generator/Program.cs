@@ -14,7 +14,7 @@ namespace Generator
             {
                 Stopwatch stopwatch = Stopwatch.StartNew();
 
-                Application.Run(settings);
+                 Application.Run(settings);
 
                 stopwatch.Stop();
                 Console.WriteLine("Done! Time: " + stopwatch.Elapsed);
