@@ -27,7 +27,7 @@ namespace Sorter
 
             var outputOption = commandLineParser.Option<string>("-o|--output <STRING>", "Output file path.", CommandOptionType.SingleValue);
             var tempOption = commandLineParser.Option<string>("-t|--temp <STRING>", "Temp directory path.", CommandOptionType.SingleValue);
-            var bufferOption = commandLineParser.Option<int>("-b|--buffer <INT>", $"Buffer size (in row count). By defult: {ApplicationSettings.DefaultBufferSize}.", CommandOptionType.SingleValue);
+            var bufferOption = commandLineParser.Option<int>("-b|--buffer <BYTE>", $"Buffer size. By defult: {ApplicationSettings.DefaultBufferSize}.", CommandOptionType.SingleValue);
 
             var helpOption = commandLineParser.HelpOption();
 

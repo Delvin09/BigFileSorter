@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Old.Sorter;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Sorter
+namespace Old.Sorter
 {
     internal partial class ChunkSorter
     {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sorter.Chunks;
+using System;
 using System.Diagnostics;
 
 namespace Sorter
@@ -25,11 +26,16 @@ namespace Sorter
                 Console.WriteLine("Start merge chunks");
                 stopwatch = Stopwatch.StartNew();
 
-                var sorter = new ChunkSorter(settings);
+                //TODO: add tree stort
+                var sorter = new Sorter(settings);
                 sorter.Sort();
 
                 stopwatch.Stop();
                 Console.WriteLine("Chunks merged! Time: " + stopwatch.Elapsed);
+
+                Console.WriteLine("Size is equal: " + (settings.InputFile.Length == settings.OutputFile.Length));
+                Console.WriteLine("Input Size " + (settings.InputFile.Length));
+                Console.WriteLine("OutPt Size " + (settings.OutputFile.Length));
             }
             finally
             {
@@ -51,5 +57,4 @@ namespace Sorter
             }
         }
     }
-
 }
