@@ -2,8 +2,8 @@
   "profiles": {
     "Sorter": {
       "commandName": "Project",
-      //"commandLineArgs": "-i \"C:\\Users\\Oleg\\source\\repos\\BigFileSorter\\Generator\\bin\\Release\\net6.0\\result_8-27-2022 10_23_27 AM.txt\"",
-      "commandLineArgs": "-i \"C:\\Users\\Oleg\\source\\repos\\BigFileSorter\\Generator\\bin\\Debug\\net6.0\\result_8-30-2022 8_43_41 PM.txt\""
+      "commandLineArgs": "-i \"C:\\Users\\Oleg\\source\\repos\\BigFileSorter\\Generator\\bin\\Release\\net6.0\\result_8-27-2022 10_23_27 AM.txt\""
+      //"commandLineArgs": "-i \"C:\\Users\\Oleg\\source\\repos\\BigFileSorter\\Generator\\bin\\Debug\\net6.0\\result_8-30-2022 8_43_41 PM.txt\""
     }
   }
 }

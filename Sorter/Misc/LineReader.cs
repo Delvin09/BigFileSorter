@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Sorter.Chunks
+namespace Sorter.Misc
 {
     class LineReader : IDisposable
     {

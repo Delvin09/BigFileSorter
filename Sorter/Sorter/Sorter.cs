@@ -1,4 +1,5 @@
 ﻿using Sorter.Chunks;
+using Sorter.Misc;
 using Sorter.Records;
 using System;
 using System.Collections.Generic;
@@ -22,8 +23,8 @@ namespace Sorter
             List<FileInfo> files = GetChunks();
 
             Console.WriteLine("Chunks Size is equals: " + (files.Sum(f => f.Length) == _settings.InputFile.Length));
-            Console.WriteLine("Input Size " + (_settings.InputFile.Length));
-            Console.WriteLine("OutPt Size " + (files.Sum(f => f.Length)));
+            Console.WriteLine("Input Size " + _settings.InputFile.Length);
+            Console.WriteLine("OutPt Size " + files.Sum(f => f.Length));
 
             if (files.Count == 0)
             {
@@ -35,7 +36,9 @@ namespace Sorter
             }
             else
             {
-                var priorityQueue = new PriorityQueue<ChunkFile, Record>();
+                //MergeByTreeQueue(files, outputFilePath);
+              
+                var priorityQueue = new PriorityQueue<ChunkFile, Record>(files.Count + 1);
                 foreach (var file in files.Select(file => new ChunkFile(file, _settings.BufferSize / files.Count)))
                 {
                     priorityQueue.Enqueue(file, file.Current);
@@ -53,6 +56,24 @@ namespace Sorter
                             priorityQueue.Enqueue(file, file.Current);
                         else
                             file.Dispose();
+                    }
+                }
+            }
+        }
+
+        private void MergeByTreeQueue(List<FileInfo> files, string outputFilePath)
+        {
+            var priorityQueue = new ChunksQueue(files.Select(f => new ChunkFile(f, _settings.BufferSize / files.Count)));
+            using (var writer = new StreamWriter(outputFilePath))
+            {
+                while (priorityQueue.Count > 0)
+                {
+                    var file = priorityQueue.Peek();
+                    writer.WriteLine(file.Current.Span);
+
+                    if (!priorityQueue.MoveNext())
+                    {
+                        file.Dispose();
                     }
                 }
             }
